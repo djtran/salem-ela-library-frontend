@@ -75,6 +75,7 @@
     "tumblr.js": "^2.0.2",
     "twilio": "^3.33.3",
     "twit": "^2.2.11",
+    "uuid": "^3.3.3",
     "validator": "^11.1.0"
   },
   "devDependencies": {

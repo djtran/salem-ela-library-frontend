@@ -33,6 +33,7 @@ const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
+const generateQrController = require('./controllers/generateQr');
 
 /**
  * API keys and Passport configuration.
@@ -43,6 +44,11 @@ const passportConfig = require('./config/passport');
  * Create Express server.
  */
 const app = express();
+
+/**
+ * Get Base API URL
+ */
+apiBaseUrl = process.env.BASE_API_URL || "http://localhost:4567";
 
 /**
  * Connect to MongoDB.
@@ -144,6 +150,8 @@ app.post('/account/profile', passportConfig.isAuthenticated, userController.post
 app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
+app.get('/generateQr', generateQrController.getGenerateQr);
+app.post('/generateQr', generateQrController.postGenerateQr);
 
 /**
  * API examples routes.

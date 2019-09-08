@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1 #{name}
+  h4 #{tags}
+  #display
+  
+  script.
+    window.onload = () => {
+      var img = new Image();
+      img.src = 'data:image/png;base64,' + "#{image}";
+      document.querySelector("#display").appendChild(img);
+    }
