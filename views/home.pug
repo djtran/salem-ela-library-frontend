@@ -2,23 +2,3 @@ extends layout
 
 block content
   h1 #{title}
-
-  .toast(role='alert' aria-live='assertive' aria-atomic='true')
-    .toast-header
-      strong.mr-auto Snapped!
-      button.ml-2.mb-1.close(type='button' data-dismiss='toast' aria-label='Close')
-        span(aria-hidden='true') &times;
-    .toast-body
-      p Image taken!
-
-  hr
-  //
-    Ideally these elements aren't created until it's confirmed that the
-    client supports video/camera, but for the sake of illustrating the
-    elements involved, they are created with markup (not JavaScript)
-  video#video(width='640' height='480' autoplay='')
-  br
-  button#snap.btn.btn-info Snap Photo
-  br
-  canvas#canvas(width='640' height='480')
-  script(src='/js/main.js')

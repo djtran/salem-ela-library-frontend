@@ -1,0 +1,72 @@
+extends layout
+
+block content
+  h1 #{title}
+  if !user
+    h1 Please log in first!
+  else
+    //
+      Ideally these elements aren't created until it's confirmed that the
+      client supports video/camera, but for the sake of illustrating the
+      elements involved, they are created with markup (not JavaScript)
+    video#video(width='640' height='480' autoplay='')
+    br
+    button#snap.btn.btn-info Snap Photo
+    br
+    canvas#canvas(width='640' height='480')
+
+    div(aria-live='polite' aria-atomic='true' style='position: absolute; top: 100px; right: 100px; min-height: 200px;')
+      .toast()
+        .toast-header
+          i.fas.fa-camera
+          strong.mr-auto Snapped!
+          button.ml-2.mb-1.close(type='button' data-dismiss='toast' aria-label='Close')
+            span(aria-hidden='true') &times;
+        .toast-body
+          p Image taken!
+
+    script.
+      window.onload = () => {
+        // Grab elements, create settings, etc.
+        var video = document.getElementById('video');
+        $('.toast').toast();
+        $('.toast').toast('hide');
+
+        // Get access to the camera!
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          navigator.mediaDevices.getUserMedia({
+            video: true
+          }).then(function (stream) {
+            video.srcObject = stream;
+            video.play();
+          });
+          // Elements for taking the snapshot
+          var canvas = document.getElementById("canvas");
+          var context = canvas.getContext('2d');
+          var video = document.getElementById('video');
+
+          // Trigger photo take
+          // If you're reading this, don't judge me for putting this information inline :P
+          // I'll put this behind a POST request and hide the server URL and API I promise haha
+          document.getElementById("snap").addEventListener("click", function () {
+            context.drawImage(video, 0, 0, 640, 480);
+            var blob = canvas.toDataURL();
+            var payload = {
+              "Image" : blob,
+              "Student": {
+                "id" : "#{user.userId}",
+                "name" : "#{user.name}"
+              }
+            };
+
+            console.log(JSON.stringify(payload));
+            $('.toast').toast('show');
+            
+            $.post("#{apiBaseUrl}" + "/checkOut",JSON.stringify(payload),function(data, status) {
+              console.log(data);
+              console.log(status);
+            });
+          });
+        }      
+      };
+

@@ -24,13 +24,17 @@ window.onload = () => {
       context.drawImage(video, 0, 0, 640, 480);
       var blob = canvas.toDataURL();
       var payload = {
-        "Image" : blob
+        "Image" : blob,
+        "Student": {
+          "id" : "bar123",
+          "name" : "Foo Boy"
+        }
       };
 
       console.log(JSON.stringify(payload));
       $('.toast').toast('show');
       
-      $.post(apiBaseUrl + "/readQrCode",JSON.stringify(payload),function(data, status) {
+      $.post(apiBaseUrl + "/checkOut",JSON.stringify(payload),function(data, status) {
         console.log(data);
         console.log(status);
       });

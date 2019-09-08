@@ -34,6 +34,8 @@ const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
 const generateQrController = require('./controllers/generateQr');
+const checkOutController = require('./controllers/checkOut');
+const checkInController = require('./controllers/checkIn');
 
 /**
  * API keys and Passport configuration.
@@ -141,17 +143,10 @@ app.get('/reset/:token', userController.getReset);
 app.post('/reset/:token', userController.postReset);
 app.get('/signup', userController.getSignup);
 app.post('/signup', userController.postSignup);
-app.get('/contact', contactController.getContact);
-app.post('/contact', contactController.postContact);
-app.get('/account/verify', passportConfig.isAuthenticated, userController.getVerifyEmail);
-app.get('/account/verify/:token', passportConfig.isAuthenticated, userController.getVerifyEmailToken);
-app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
-app.post('/account/profile', passportConfig.isAuthenticated, userController.postUpdateProfile);
-app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
-app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
-app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 app.get('/generateQr', generateQrController.getGenerateQr);
 app.post('/generateQr', generateQrController.postGenerateQr);
+app.get('/checkOut', checkOutController.getCheckOut);
+app.get('/checkIn', checkInController.getCheckIn);
 
 /**
  * API examples routes.

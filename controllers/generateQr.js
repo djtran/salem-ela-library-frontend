@@ -11,7 +11,7 @@ exports.getGenerateQr = (req, res) => {
   const unknownUser = !(req.user);
 
   res.render('generateQr', {
-    title: 'Book Qr Code Creator',
+    title: 'Generate QR Code',
     unknownUser,
   });
 };
@@ -21,7 +21,6 @@ exports.getGenerateQr = (req, res) => {
  */
 exports.postGenerateQr = (req, res) => {
   const validationErrors = [];
-  let bookName;
   let bookId = uuid()
   if (validator.isEmpty(req.body.name)) validationErrors.push({ msg: 'Please enter your name' });
   
@@ -39,7 +38,7 @@ exports.postGenerateQr = (req, res) => {
   }
 
 
-  request.post(apiBaseUrl + "/generateQrCodeForBook",{json:true,body:payload}, function (err,httpResponse,body) {
+  request.post(apiBaseUrl + "/addBook",{json:true,body:payload}, function (err,httpResponse,body) {
    
     res.render('showQr', {
       title: 'Book Qr Code',
