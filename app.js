@@ -18,6 +18,8 @@ const passport = require('passport');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
+const fs = require('fs');
+const https = require('https');
 
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
@@ -259,6 +261,16 @@ if (process.env.NODE_ENV === 'development') {
 app.listen(app.get('port'), () => {
   console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
   console.log('  Press CTRL-C to stop\n');
+});
+
+var sslPort = process.env.PORT_SSL || 8081;
+
+https.createServer({
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
+}, app)
+.listen(sslPort, function() {
+  console.log("https listening on port %d. Go to https://localhost:%d", sslPort, sslPort)
 });
 
 module.exports = app;
