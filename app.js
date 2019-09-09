@@ -264,11 +264,19 @@ app.listen(app.get('port'), () => {
 });
 
 var sslPort = process.env.PORT_SSL || 8081;
+var privKey = process.env.PRIVATE_KEY || "server.key";
+var cert = process.env.CERTIFICATE || "server.cert";
+var ca = process.env.CHAIN;
 
-https.createServer({
-  key: fs.readFileSync('server.key'),
-  cert: fs.readFileSync('server.cert')
-}, app)
+var credentials = {
+  key: fs.readFileSync(privKey, 'utf8'),
+  cert: fs.readFileSync(cert, 'utf8')
+}
+if (ca) {
+  credentials.ca = fs.readFileSync(ca, 'utf8')
+}
+
+https.createServer(credentials, app)
 .listen(sslPort, function() {
   console.log("https listening on port %d. Go to https://localhost:%d", sslPort, sslPort)
 });
